@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>@if(isset($action) && $action == 'register')
+            {{ __('registerTitle') }}
+        @else
+            {{ __('loginTitle') }}
+        @endif – {{ __('header') }}</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+</head>
+<body>
+<header>
+    @include('partials.Components', ['compo' => 'Menu principale']) <!-- Corrected path -->
+</header>
+
+<main class="form-page">
+    <div class="form-wrapper">
+        @if(isset($action) && $action == 'register')
+            <h2 class="text-center text-success mb-4" data-i18n="registerTitle">Inscription</h2>
+            <form method="POST" action="{{ route('sinscrire', ['locale' => app()->getLocale()]) }}" class="mx-auto" style="max-width:400px;">
+                @csrf
+                <div class="mb-3">
+                    <input type="text" name="name" class="form-control" placeholder="Nom" required>
+                </div>
+                <div class="mb-3">
+                    <input type="email" name="email" class="form-control" placeholder="Email" required>
+                </div>
+                <div class="mb-3">
+                    <input type="password" name="password" class="form-control" placeholder="Mot de passe" required>
+                </div>
+                <div class="mb-3">
+                    <input type="password" name="password_confirmation" class="form-control" placeholder="Confirmer le mot de passe" required>
+                </div>
+                <div class="mb-3">
+                    <select name="role" class="form-select" required>
+                        <option value="cooperative">{{ __('Cooperative') }}</option>
+                        <option value="commerçant">{{ __('Merchant') }}</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <select name="notification_type" class="form-select" required>
+                        <option value="email">{{ __('Email') }}</option>
+                        <option value="sms">{{ __('SMS') }}</option>
+                        <option value="whatsapp">{{ __('WhatsApp') }}</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success w-100">{{ __('Register') }}</button>
+            </form>
+            <div class="text-center mt-3">
+                <a href="{{ route('login', ['locale' => app()->getLocale()]) }}">{{ __('Login') }}</a>
+                <p class="form-footer mt-2">
+                    <a href="{{ route('register', ['locale' => app()->getLocale()]) }}" data-i18n="alreadyAccount">Déjà un compte ? Connectez-vous</a>
+                </p>
+            </div>
+        @else
+            <h2 class="text-center text-success mb-4" data-i18n="loginTitle">Connexion</h2>
+            <form method="POST" action="{{ route('seconnecter', ['locale' => app()->getLocale()]) }}" class="mx-auto" style="max-width:400px;">
+                @csrf
+                <div class="mb-3">
+                    <input type="email" name="email" class="form-control" placeholder="Email" required>
+                </div>
+                <div class="mb-3">
+                    <input type="password" name="password" class="form-control" placeholder="Mot de passe" required>
+                </div>
+                <button type="submit" class="btn btn-success w-100">{{ __('Login') }}</button>
+            </form>
+            <div class="text-center mt-3">
+                <a href="{{ route('register', ['locale' => app()->getLocale()]) }}">{{ __('Register') }}</a>
+                <p class="form-footer mt-2">
+                    <a href="{{ route('register', ['locale' => app()->getLocale()]) }}" data-i18n="noAccount">Pas de compte ? Inscrivez-vous</a><br/>
+                    <a href="#" data-i18n="forgotPassword">Mot de passe oublié ?</a>
+                </p>
+            </div>
+        @endif
+    </div>
+</main>
+
+@include('partials.Components', ['compo' => 'Footer']) <!-- Corrected path -->
+
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel" data-i18n="loginRequiredModal">Connexion Requise</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p data-i18n="loginPrompt">Veuillez vous connecter pour accéder au contenu.</p>
+                <a href="{{ route('login', ['locale' => app()->getLocale()]) }}" class="btn btn-success" data-i18n="login">Se connecter</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ asset('js/app.js') }}"></script>
+</body>
+</html>
