@@ -19,9 +19,13 @@ class AdminController extends Controller
         $users = Utilisateur::all();
         return view('admin.user_show',compact('users'));
     }
-    public function ShowUser($id){
+    public function showUser($id)
+    {
         $user = Utilisateur::find($id);
-        return view('admin.User_Detail',compact('user'));
+        if (!$user) {
+            return redirect()->route('admin.User_Management')->with('error', 'Utilisateur non trouvé.');
+        }
+        return view('admin.User_Detail', compact('user'));
     }
     public function ShowStatistics(){
         $totalUsers = Utilisateur::count();
@@ -44,21 +48,21 @@ class AdminController extends Controller
             'totalTransactions'
         ));
     }
-    public function UpdateForm(Request $request){
-        $user = Utilisateur::find($request->input('id'));
+    public function UpdateForm( $id){
+        $user = Utilisateur::find($id);
         return view('admin.FormEdit',compact('user'));
     }
     public function UpdateUser(Request $request){
         $user = Utilisateur::find($request->input('id'));
-        $user->nom = $request->input('nom');
+        $user->name = $request->input('nom');
         $user->email = $request->input('email');
         $user->password = $request->input('password');
         $user->role = $request->input('role');
         $user->save();
         return redirect()->route('admin.User_Management');
     }
-    public function DeleteUser($id){
-        $user = Utilisateur::find($id);
+    public function DeleteUser(Request $request){
+        $user = Utilisateur::find($request->input('id'));
         $user->delete();
         return redirect()->route('admin.User_Management');
     }

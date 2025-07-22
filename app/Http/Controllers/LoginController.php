@@ -27,17 +27,28 @@ class LoginController extends Controller
                 $users = Utilisateur::all();
                 return view('admin.dashboard');
             }
-            return view('User_space',compact('role'));
+            $user = Utilisateur::find( Utilisateur::where('email', $credentials['email'])->value('id'));
+            return view('User_Space.Dashboard_User',compact('user'));
         }
 
         return back()->withErrors(['email' => __('auth.failed')]);
     }
 
-    public function logout(Request $request){
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect()->route('home');
+    public function logout(Request $request)
+    {
+        // Vérification manuelle de l'utilisateur connecté (sans middleware auth)
+        if (auth()->check()) {
+            // Déconnexion de l'utilisateur
+            auth()->logout();
+            // Invalidation de la session
+            $request->session()->invalidate();
+            // Régénération du token de session
+            $request->session()->regenerateToken();
+            // Redirection vers la page d'accueil
+            return redirect()->route('home');
+        }
+        // Si aucun utilisateur n'est connecté, redirection directe
+        return redirect()->route('home')->with('error', 'Aucun utilisateur connecté.');
     }
 
 }
