@@ -1,4 +1,4 @@
-@extends('views.layouts.app')
+@extends('layouts.app')
 
 @section('content')
     <div class="container py-5">
@@ -27,7 +27,7 @@
                 </ul>
                 <h3 class="mt-4">Contact</h3>
                 <p>
-                    Pour toute question ou suggestion, <a href="{{ route('admin.contact.send') }}">contactez-nous</a>.
+                    Pour toute question ou suggestion, <a href="{{ route('contact') }}">contactez-nous</a>.
                 </p>
             </div>
         </div>

@@ -3,7 +3,6 @@
 
 @section('content')
 <div class="container py-5">
-    @include('partials.Components', ['compo' => 'sidebar admin'])
     <div class="card">
         <div class="card-header">{{ __('Dashboard') }}</div>
         <div class="card-body">

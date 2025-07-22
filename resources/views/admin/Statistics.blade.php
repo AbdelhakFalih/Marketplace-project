@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="container py-5">
-        @include('partials.Components', ['compo' => 'sidebar admin'])
         <h2 class="mb-4" data-i18n="statistics">Statistiques</h2>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <!-- Card 1: Users -->

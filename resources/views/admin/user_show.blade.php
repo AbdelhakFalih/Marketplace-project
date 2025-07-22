@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="container py-5">
-        @include('partials/Components', ['compo' => 'sidebar admin'])
         <div class="dashboard-content">
             <div class="container">
                 <h2 class="section-title" data-i18n="accountManagement">Gestion des Comptes</h2>
@@ -15,10 +14,9 @@
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $user->name }}</h5>
                                     <p class="card-text" data-i18n="roleLabel">Rôle : {{ $user->role }}</p>
-                                    <a href="{{ route('admin.users_show', ['locale' => app()->getLocale(), 'id' => $user->id]) }}" class="btn btn-primary"
+                                    <a href="{{ route('admin.users_show',['id' => $user->id]) }}" class="btn btn-primary"
                                        data-i18n="viewDetails">Voir Détails</a>
-                                    <button type="button" class="btn btn-danger" data-i18n="delete"
-                                            onclick="deleteUser({{ $user->id }}, this)">Supprimer</button>
+                                    <a class="btn btn-danger" data-i18n="delete" onclick="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?');" href="/admin/DeleteUser?id={{ $user->id }}">Supprimer</a>
                                 </div>
                             </div>
                         </div>

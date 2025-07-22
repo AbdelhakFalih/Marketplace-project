@@ -20,7 +20,7 @@
     <div class="form-wrapper">
         @if(isset($action) && $action == 'register')
             <h2 class="text-center text-success mb-4" data-i18n="registerTitle">Inscription</h2>
-            <form method="POST" action="{{ route('sinscrire', ['locale' => app()->getLocale()]) }}" class="mx-auto" style="max-width:400px;">
+            <form method="POST" action="{{ route('sinscrire') }}" class="mx-auto" style="max-width:400px;">
                 @csrf
                 <div class="mb-3">
                     <input type="text" name="name" class="form-control" placeholder="Nom" required>
@@ -50,14 +50,14 @@
                 <button type="submit" class="btn btn-success w-100">{{ __('Register') }}</button>
             </form>
             <div class="text-center mt-3">
-                <a href="{{ route('login', ['locale' => app()->getLocale()]) }}">{{ __('Login') }}</a>
+                <a href="{{ route('login') }}">{{ __('Login') }}</a>
                 <p class="form-footer mt-2">
-                    <a href="{{ route('register', ['locale' => app()->getLocale()]) }}" data-i18n="alreadyAccount">Déjà un compte ? Connectez-vous</a>
+                    <a href="{{ route('register') }}" data-i18n="alreadyAccount">Déjà un compte ? Connectez-vous</a>
                 </p>
             </div>
         @else
             <h2 class="text-center text-success mb-4" data-i18n="loginTitle">Connexion</h2>
-            <form method="POST" action="{{ route('seconnecter', ['locale' => app()->getLocale()]) }}" class="mx-auto" style="max-width:400px;">
+            <form method="POST" action="{{ route('seconnecter') }}" class="mx-auto" style="max-width:400px;">
                 @csrf
                 <div class="mb-3">
                     <input type="email" name="email" class="form-control" placeholder="Email" required>
@@ -68,9 +68,9 @@
                 <button type="submit" class="btn btn-success w-100">{{ __('Login') }}</button>
             </form>
             <div class="text-center mt-3">
-                <a href="{{ route('register', ['locale' => app()->getLocale()]) }}">{{ __('Register') }}</a>
+                <a href="{{ route('register') }}">{{ __('Register') }}</a>
                 <p class="form-footer mt-2">
-                    <a href="{{ route('register', ['locale' => app()->getLocale()]) }}" data-i18n="noAccount">Pas de compte ? Inscrivez-vous</a><br/>
+                    <a href="{{ route('register') }}" data-i18n="noAccount">Pas de compte ? Inscrivez-vous</a><br/>
                     <a href="#" data-i18n="forgotPassword">Mot de passe oublié ?</a>
                 </p>
             </div>
@@ -89,7 +89,7 @@
             </div>
             <div class="modal-body">
                 <p data-i18n="loginPrompt">Veuillez vous connecter pour accéder au contenu.</p>
-                <a href="{{ route('login', ['locale' => app()->getLocale()]) }}" class="btn btn-success" data-i18n="login">Se connecter</a>
+                <a href="{{ route('login') }}" class="btn btn-success" data-i18n="login">Se connecter</a>
             </div>
         </div>
     </div>
