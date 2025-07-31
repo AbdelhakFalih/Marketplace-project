@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ProfileMail;
 use App\Models\Offre;
 use App\Models\Utilisateur;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {

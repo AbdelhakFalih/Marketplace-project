@@ -6,49 +6,60 @@ use App\Models\Utilisateur;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
-    public function showloginForm(){
+    public function showloginForm()
+    {
         $action = 'login';
-        return view('auth.Auth',compact('action'));
+        return view('auth.Auth', compact('action'));
     }
 
-    public function Login(Request $request){
+    public function Login(Request $request)
+    {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
-        $pass_bdd = Utilisateur::where('email', $credentials['email'])->value('password');
-        $pass_ent = $request->input('password');
-        if ($pass_ent == $pass_bdd) {
-            $role = Utilisateur::where('email', $credentials['email'])->value('role');
-            if ($role == 'admin') {
-                $users = Utilisateur::all();
-                return view('admin.dashboard');
-            }
-            $user = Utilisateur::find( Utilisateur::where('email', $credentials['email'])->value('id'));
-            return view('User_Space.Dashboard_User',compact('user'));
+
+        Log::info('Login attempt', ['email' => $credentials['email']]);
+
+        // Use first() to get a single user model, not a collection
+        $user = Utilisateur::where('email', $credentials['email'])->first();
+
+        if (!$user) {
+            Log::warning('User not found', ['email' => $credentials['email']]);
+            return back()->withErrors(['email' => __('auth.failed')])->withInput();
         }
 
-        return back()->withErrors(['email' => __('auth.failed')]);
+        // WARNING: Comparing plain-text passwords is insecure if passwords are hashed
+        // If passwords are hashed, use Hash::check($credentials['password'], $user->password)
+        if ($request->input('password') == $user->password) {
+            // Log the user in manually since we're not using Auth::attempt()
+            Auth::login($user);
+            $request->session()->regenerate();
+
+            Log::info('Login successful', ['user_id' => $user->id, 'role' => $user->role]);
+
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.Dashboard');
+            }
+            return redirect()->route('user.home')->with('success', __('Bienvenue, :name!', ['id' => $user->id]));
+        }
+
+        Log::warning('Password mismatch', ['email' => $credentials['email']]);
+        return back()->withErrors(['email' => __('auth.failed')])->withInput();
     }
 
     public function logout(Request $request)
     {
-        // Vérification manuelle de l'utilisateur connecté (sans middleware auth)
         if (auth()->check()) {
-            // Déconnexion de l'utilisateur
             auth()->logout();
-            // Invalidation de la session
             $request->session()->invalidate();
-            // Régénération du token de session
             $request->session()->regenerateToken();
-            // Redirection vers la page d'accueil
             return redirect()->route('home');
         }
-        // Si aucun utilisateur n'est connecté, redirection directe
-        return redirect()->route('home')->with('error', 'Aucun utilisateur connecté.');
+        return redirect()->route('home')->with('error', __('Aucun utilisateur connecté.'));
     }
-
 }

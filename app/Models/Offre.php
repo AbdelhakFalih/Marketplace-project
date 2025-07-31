@@ -11,6 +11,6 @@ class Offre extends Model
 
     public function user()
     {
-        return $this->belongsTo(Utilisateur::class);
+        return $this->belongsTo(Utilisateur::class, 'user_id');
     }
 }
