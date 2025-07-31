@@ -1,58 +1,59 @@
 @extends('layouts.user')
 
+@section('header')
+    <header>
+        @include('partials.Components', ['compo' => 'sidebar', 'user_id' => auth()->id()])
+    </header>
+@endsection
+
 @section('content')
-    <div class="container">
-        <div class="card">
-            <div class="card-header">{{ __('Publish a Product Offer') }}</div>
-            <div class="card-body">
-                <form id="offer-form" action="{{ route('user.post-offer') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="user_id" value="{{ $user->id }}">
-                    <input type="hidden" name="password" id="hidden-password" value="">
-                    <div class="form-group">
-                        <label>{{ __('Product Name') }}</label>
-                        <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" required>
-                        @error('name')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label>{{ __('Technical Sheet') }}</label>
-                        <textarea name="technical_sheet" class="form-control @error('technical_sheet') is-invalid @enderror" required></textarea>
-                        @error('technical_sheet')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label>{{ __('Flyer (image or PDF)') }}</label>
-                        <input type="file" name="flyer" class="form-control-file @error('flyer') is-invalid @enderror" accept="image/*,application/pdf">
-                        @error('flyer')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label>{{ __('Price (in MAD)') }}</label>
-                        <input type="number" name="price" class="form-control @error('price') is-invalid @enderror" step="0.01" required>
-                        @error('price')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label>{{ __('Delivery Options') }}</label>
-                        <select name="delivery_option" class="form-control @error('delivery_option') is-invalid @enderror" required>
-                            <option value="">{{ __('-- Select --') }}</option>
-                            <option value="home">{{ __('Home Delivery') }}</option>
-                            <option value="store1">{{ __('Store Casablanca') }}</option>
-                            <option value="store2">{{ __('Store Rabat') }}</option>
-                            <option value="cooperative">{{ __('Cooperative Local') }}</option>
-                        </select>
-                        @error('delivery_option')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
-                        <input type="password" name="user_pass" class="form-control @error('user_pass') is-invalid @enderror" step="0.01" required>
-                    </div>
-                    <input type="submit" value="Publish Offer">
-                </form
-            </div>'
-        </div>
+    @php
+        $lang = app()->getLocale();
+        $dir = $lang === 'ar' ? 'rtl' : 'ltr';
+    @endphp
+    <div class="container mt-5" dir="{{ $dir }}">
+        <h1>{{ __('Ajouter une offre') }}</h1>
+        <form action="{{ route('user.post-offer') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+            <div class="mb-3">
+                <label for="name" class="form-label">{{ __('Nom du produit') }}</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="mb-3">
+                <label for="type" class="form-label">{{ __('Type') }}</label>
+                <input type="text" class="form-control" id="type" name="type" required>
+            </div>
+            <div class="mb-3">
+                <label for="technical_sheet" class="form-label">{{ __('Fiche technique') }}</label>
+                <textarea class="form-control" id="technical_sheet" name="technical_sheet" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="flyer" class="form-label">{{ __('Flyer') }}</label>
+                <input type="file" class="form-control" id="flyer" name="flyer" accept=".jpg,.png,.pdf">
+            </div>
+            <div class="mb-3">
+                <label for="price" class="form-label">{{ __('Prix (MAD)') }}</label>
+                <input type="number" class="form-control" id="price" name="price" min="0" step="0.01" required>
+            </div>
+            <div class="mb-3">
+                <label for="delivery_conditions" class="form-label">{{ __('Conditions de livraison') }}</label>
+                <select class="form-control" id="delivery_conditions" name="delivery_conditions" required>
+                    <option value="home">{{ __('À domicile') }}</option>
+                    <option value="store1">{{ __('Magasin 1') }}</option>
+                    <option value="store2">{{ __('Magasin 2') }}</option>
+                    <option value="cooperative">{{ __('Local de la coopérative') }}</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="store1_city" class="form-label">{{ __('Ville magasin 1') }}</label>
+                <input type="text" class="form-control" id="store1_city" name="store1_city">
+            </div>
+            <div class="mb-3">
+                <label for="store2_city" class="form-label">{{ __('Ville magasin 2') }}</label>
+                <input type="text" class="form-control" id="store2_city" name="store2_city">
+            </div>
+            <button type="submit" class="btn btn-primary">{{ __('Publier') }}</button>
+        </form>
+    </div>
 @endsection

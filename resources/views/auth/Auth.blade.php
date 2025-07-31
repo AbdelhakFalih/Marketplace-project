@@ -1,99 +1,113 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang=en>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>@if(isset($action) && $action == 'register')
-            {{ __('registerTitle') }}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>
+        @if($action === 'register')
+            {{ __('Inscription') }} – {{ __('Marketplace Coopératives') }}
         @else
-            {{ __('loginTitle') }}
-        @endif – {{ __('header') }}</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+            {{ __('Connexion') }} – {{ __('Marketplace Coopératives') }}
+        @endif
+    </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/4.1.7/css/flag-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"/>
+    <style>
+        .form-wrapper {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        [dir="rtl"] .form-label,
+        [dir="rtl"] .invalid-feedback,
+        [dir="rtl"] .text-center {
+            text-align: right;
+        }
+    </style>
 </head>
 <body>
 <header>
-    @include('partials.Components', ['compo' => 'Menu principale']) <!-- Corrected path -->
+    @include('partials.Components', ['compo' => 'Menu principale'])
 </header>
 
 <main class="form-page">
-    <div class="form-wrapper">
-        @if(isset($action) && $action == 'register')
-            <h2 class="text-center text-success mb-4" data-i18n="registerTitle">Inscription</h2>
-            <form method="POST" action="{{ route('sinscrire') }}" class="mx-auto" style="max-width:400px;">
+    <div class="form-wrapper" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
+        @if($action === 'login')
+            <h2 class="text-center text-success mb-4">{{ __('Connexion') }}</h2>
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    {{ __('auth.failed') }}
+                </div>
+            @endif
+            <form method="POST" action="{{ route('seconnecter') }}">
                 @csrf
                 <div class="mb-3">
-                    <input type="text" name="name" class="form-control" placeholder="Nom" required>
+                    <label for="email" class="form-label">{{ __('Adresse e-mail') }}</label>
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required>
+                    @error('email')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-3">
-                    <input type="email" name="email" class="form-control" placeholder="Email" required>
+                    <label for="password" class="form-label">{{ __('Mot de passe') }}</label>
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required>
+                    @error('password')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
-                <div class="mb-3">
-                    <input type="password" name="password" class="form-control" placeholder="Mot de passe" required>
-                </div>
-                <div class="mb-3">
-                    <input type="password" name="password_confirmation" class="form-control" placeholder="Confirmer le mot de passe" required>
-                </div>
-                <div class="mb-3">
-                    <select name="role" class="form-select" required>
-                        <option value="cooperative">{{ __('Cooperative') }}</option>
-                        <option value="commerçant">{{ __('Merchant') }}</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <select name="notification_type" class="form-select" required>
-                        <option value="email">{{ __('Email') }}</option>
-                        <option value="sms">{{ __('SMS') }}</option>
-                        <option value="whatsapp">{{ __('WhatsApp') }}</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-success w-100">{{ __('Register') }}</button>
+                <button type="submit" class="btn btn-success w-100">{{ __('Se connecter') }}</button>
             </form>
             <div class="text-center mt-3">
-                <a href="{{ route('login') }}">{{ __('Login') }}</a>
-                <p class="form-footer mt-2">
-                    <a href="{{ route('register') }}" data-i18n="alreadyAccount">Déjà un compte ? Connectez-vous</a>
-                </p>
+                <p>{{ __('Pas de compte ?') }} <a href="{{ route('register') }}">{{ __('Inscrivez-vous') }}</a></p>
+                <p><a href="#">{{ __('Mot de passe oublié ?') }}</a></p>
             </div>
-        @else
-            <h2 class="text-center text-success mb-4" data-i18n="loginTitle">Connexion</h2>
-            <form method="POST" action="{{ route('seconnecter') }}" class="mx-auto" style="max-width:400px;">
+        @elseif($action === 'register')
+            <h2 class="text-center text-success mb-4">{{ __('Inscription') }}</h2>
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    @foreach($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
+            <form method="POST" action="{{ route('sinscrire') }}">
                 @csrf
                 <div class="mb-3">
-                    <input type="email" name="email" class="form-control" placeholder="Email" required>
+                    <label for="name" class="form-label">{{ __('Nom') }}</label>
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required>
+                    @error('name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-3">
-                    <input type="password" name="password" class="form-control" placeholder="Mot de passe" required>
+                    <label for="email" class="form-label">{{ __('Adresse e-mail') }}</label>
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required>
+                    @error('email')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
-                <button type="submit" class="btn btn-success w-100">{{ __('Login') }}</button>
+                <div class="mb-3">
+                    <label for="password" class="form-label">{{ __('Mot de passe') }}</label>
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required>
+                    @error('password')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="password_confirmation" class="form-label">{{ __('Confirmer le mot de passe') }}</label>
+                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                </div>
+                <button type="submit" class="btn btn-success w-100">{{ __('S\'inscrire') }}</button>
             </form>
             <div class="text-center mt-3">
-                <a href="{{ route('register') }}">{{ __('Register') }}</a>
-                <p class="form-footer mt-2">
-                    <a href="{{ route('register') }}" data-i18n="noAccount">Pas de compte ? Inscrivez-vous</a><br/>
-                    <a href="#" data-i18n="forgotPassword">Mot de passe oublié ?</a>
-                </p>
+                <p>{{ __('Déjà un compte ?') }} <a href="{{ route('login') }}">{{ __('Connectez-vous') }}</a></p>
             </div>
         @endif
     </div>
 </main>
 
-@include('partials.Components', ['compo' => 'Footer']) <!-- Corrected path -->
-
-<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="loginModalLabel" data-i18n="loginRequiredModal">Connexion Requise</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p data-i18n="loginPrompt">Veuillez vous connecter pour accéder au contenu.</p>
-                <a href="{{ route('login') }}" class="btn btn-success" data-i18n="login">Se connecter</a>
-            </div>
-        </div>
-    </div>
-</div>
+@include('partials.Components', ['compo' => 'Footer'])
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('js/app.js') }}"></script>

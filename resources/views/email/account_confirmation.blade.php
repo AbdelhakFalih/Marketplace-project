@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ __('Account Confirmation') }}</title>
-</head>
-<body>
-<h1>{{ __('Welcome, :name!', ['name' => $name]) }}</h1>
-<p>{{ __('Thank you for registering. Your account has been created with the email: :email.', ['email' => $email]) }}</p>
-<p>{{ __('Please log in to start using the marketplace.') }}</p>
-<a href="{{ url('/login') }}">{{ __('Log In') }}</a>
-</body>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title> Confirmation de compte </title>
+    </head>
+    <body>
+        <img src="images/logo.jpg" alt="Logo" style="width: 100px; height: 100px;">
+        <h1> Bonjour {{ $name }}</h1>
+        <p>
+            Merci pour vôtre inscription. Ton compte est crée avec l email : :email., {{ $email }}
+            {{ __('Veuillez cliquer sur le lien ci-dessous pour confirmer votre mail.') }}
+        </p>
+        <a href="{{ route('validate',[ 'user' => $user ])  }}">{{ __('Valider Mail ICI !!!') }}</a>
+    </body>
 </html>

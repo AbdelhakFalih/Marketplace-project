@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>{{ __('Profile Validation Request') }}</title>
+    <title>{{ __('Validation de profile') }}</title>
 </head>
 <body>
-<h1>{{ __('New Profile Validation Request') }}</h1>
-<p>{{ __('User :name has submitted a profile for :type validation.', ['name' => $user_name, 'type' => $profile_name]) }}</p>
-<p>{{ __('Please review and approve the profile.') }}</p>
-<a href="{{ url('/profile/' . $profile_name->id) }}">{{ __('Review Profile') }}</a>
+    <img src="images/logo.jpg" alt="Logo" style="width: 100px; height: 100px;">
+    <h1>{{ __('Monsieur , Madame') }}</h1>
+    <p>
+        {{ __('Vôtre compte est crée et est en attente de validation . ' }}
+        {{ __('Un conseiller prendra contact avec vous à un certains moment') }}
+        {{ __('Cordialement ,') }}
+    </p>
 </body>
 </html>
