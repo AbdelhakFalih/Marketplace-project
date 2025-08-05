@@ -1,0 +1,115 @@
+:root {
+  --primary-green: #38a169;
+  --primary-green-dark: #2f855a;
+  --primary-green-light: #48bb78;
+  --secondary-green: #68d391;
+  --accent-green: #c6f6d5;
+  --success-green: #38a169;
+  --warning-green: #d69e2e;
+  --danger-red: #e53e3e;
+}
+
+[data-theme="dark"] {
+  --primary-green: #48cc6c;
+  --primary-green-dark: #38a169;
+  --primary-green-light: #68d391;
+  --secondary-green: #276749;
+  --accent-green: #9ae6b4;
+}
+
+/* Classes utilitaires pour les couleurs vertes */
+.bg-primary-green {
+  background-color: var(--primary-green) !important;
+}
+.bg-primary-green-dark {
+  background-color: var(--primary-green-dark) !important;
+}
+.bg-primary-green-light {
+  background-color: var(--primary-green-light) !important;
+}
+.bg-secondary-green {
+  background-color: var(--secondary-green) !important;
+}
+.bg-accent-green {
+  background-color: var(--accent-green) !important;
+}
+
+.text-primary-green {
+  color: var(--primary-green) !important;
+}
+.text-primary-green-dark {
+  color: var(--primary-green-dark) !important;
+}
+.text-primary-green-light {
+  color: var(--primary-green-light) !important;
+}
+
+.border-primary-green {
+  border-color: var(--primary-green) !important;
+}
+
+/* Boutons verts personnalisés */
+.btn-primary-green {
+  background-color: var(--primary-green);
+  border-color: var(--primary-green);
+  color: white;
+}
+
+.btn-primary-green:hover {
+  background-color: var(--primary-green-dark);
+  border-color: var(--primary-green-dark);
+}
+
+.btn-outline-primary-green {
+  color: var(--primary-green);
+  border-color: var(--primary-green);
+}
+
+.btn-outline-primary-green:hover {
+  background-color: var(--primary-green);
+  border-color: var(--primary-green);
+  color: white;
+}
+
+/* Thème sombre */
+[data-theme="dark"] {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}
+
+[data-theme="dark"] .card {
+  background-color: var(--bs-card-bg);
+  border-color: var(--bs-border-color);
+}
+
+[data-theme="dark"] .navbar {
+  background-color: var(--bs-card-bg) !important;
+}
+
+[data-theme="dark"] .footer {
+  background-color: var(--bs-card-bg);
+}
+
+/* Transitions fluides */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Bouton de changement de thème */
+#theme-toggle {
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] #theme-toggle {
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] #theme-toggle:hover {
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+}
