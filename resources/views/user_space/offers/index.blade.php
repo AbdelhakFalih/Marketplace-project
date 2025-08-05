@@ -1,127 +1,65 @@
-@extends('layouts.user_space')
+@extends('layouts.app')
 
-@section('title', __('Mes offres'))
+@section('title')
+<span data-translate="offers.title">Offres disponibles</span>
+@endsection
 
 @section('content')
 <div class="container-fluid px-4 py-6">
-    <!-- Header -->
+    <!-- Header avec filtres -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h1 class="h3 mb-2 text-gray-800">{{ __('Mes offres') }}</h1>
-                    <p class="text-muted">{{ __('Gérez vos produits en vente') }}</p>
+                    <h1 class="h3 mb-2 text-primary-green" data-translate="offers.title">Offres disponibles</h1>
+                    <p class="text-muted">Découvrez les produits proposés par nos coopératives</p>
                 </div>
-                <div class="d-flex gap-2">
-                    <a href="{{ route('user.offers.create') }}" class="btn btn-primary">
-                        <i class="fas fa-plus me-2"></i>{{ __('Nouvelle offre') }}
-                    </a>
-                    <button class="btn btn-outline-secondary" onclick="exportOffers()">
-                        <i class="fas fa-download me-2"></i>{{ __('Exporter') }}
-                    </button>
-                </div>
+                <a href="{{ route('offers.create') }}" class="btn btn-primary-green">
+                    <i class="fas fa-plus me-2"></i><span data-translate="offers.create">Publier une offre</span>
+                </a>
             </div>
 
-            <!-- Statistiques rapides -->
-            <div class="row mb-4">
-                <div class="col-md-3">
-                    <div class="card bg-primary text-white">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h4 class="mb-0">{{ $totalOffers ?? 12 }}</h4>
-                                    <p class="mb-0">{{ __('Total offres') }}</p>
-                                </div>
-                                <i class="fas fa-shopping-bag fa-2x opacity-75"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card bg-success text-white">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h4 class="mb-0">{{ $activeOffers ?? 8 }}</h4>
-                                    <p class="mb-0">{{ __('Actives') }}</p>
-                                </div>
-                                <i class="fas fa-check-circle fa-2x opacity-75"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card bg-warning text-white">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h4 class="mb-0">{{ $pendingOffers ?? 2 }}</h4>
-                                    <p class="mb-0">{{ __('En attente') }}</p>
-                                </div>
-                                <i class="fas fa-clock fa-2x opacity-75"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card bg-info text-white">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h4 class="mb-0">{{ $soldOffers ?? 15 }}</h4>
-                                    <p class="mb-0">{{ __('Vendues') }}</p>
-                                </div>
-                                <i class="fas fa-handshake fa-2x opacity-75"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Filtres -->
+            <!-- Filtres avancés -->
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
-                    <form method="GET" class="row g-3">
+                    <form method="GET" action="{{ route('offers.index') }}" class="row g-3">
                         <div class="col-md-3">
-                            <label class="form-label">{{ __('Rechercher') }}</label>
+                            <label class="form-label">Rechercher</label>
                             <input type="text" name="search" class="form-control" 
-                                   placeholder="{{ __('Titre du produit...') }}" 
+                                   placeholder="Nom du produit..." 
                                    value="{{ request('search') }}">
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label">{{ __('Statut') }}</label>
-                            <select name="status" class="form-select">
-                                <option value="">{{ __('Tous') }}</option>
-                                <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>{{ __('Active') }}</option>
-                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>{{ __('En attente') }}</option>
-                                <option value="sold" {{ request('status') == 'sold' ? 'selected' : '' }}>{{ __('Vendue') }}</option>
-                                <option value="expired" {{ request('status') == 'expired' ? 'selected' : '' }}>{{ __('Expirée') }}</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label">{{ __('Catégorie') }}</label>
+                            <label class="form-label">Catégorie</label>
                             <select name="category" class="form-select">
-                                <option value="">{{ __('Toutes') }}</option>
-                                <option value="fruits" {{ request('category') == 'fruits' ? 'selected' : '' }}>{{ __('Fruits') }}</option>
-                                <option value="legumes" {{ request('category') == 'legumes' ? 'selected' : '' }}>{{ __('Légumes') }}</option>
-                                <option value="cereales" {{ request('category') == 'cereales' ? 'selected' : '' }}>{{ __('Céréales') }}</option>
+                                <option value="">Toutes</option>
+                                <option value="fruits" {{ request('category') == 'fruits' ? 'selected' : '' }}>Fruits</option>
+                                <option value="legumes" {{ request('category') == 'legumes' ? 'selected' : '' }}>Légumes</option>
+                                <option value="cereales" {{ request('category') == 'cereales' ? 'selected' : '' }}>Céréales</option>
+                                <option value="produits-laitiers" {{ request('category') == 'produits-laitiers' ? 'selected' : '' }}>Produits laitiers</option>
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label">{{ __('Date création') }}</label>
-                            <input type="date" name="created_date" class="form-control" value="{{ request('created_date') }}">
+                            <label class="form-label">Prix max</label>
+                            <input type="number" name="max_price" class="form-control" 
+                                   placeholder="0.00" value="{{ request('max_price') }}">
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label">{{ __('Tri par') }}</label>
+                            <label class="form-label">Localisation</label>
+                            <input type="text" name="location" class="form-control" 
+                                   placeholder="Ville..." value="{{ request('location') }}">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Tri par</label>
                             <select name="sort" class="form-select">
-                                <option value="created_at" {{ request('sort') == 'created_at' ? 'selected' : '' }}>{{ __('Plus récent') }}</option>
-                                <option value="title" {{ request('sort') == 'title' ? 'selected' : '' }}>{{ __('Titre') }}</option>
-                                <option value="price" {{ request('sort') == 'price' ? 'selected' : '' }}>{{ __('Prix') }}</option>
-                                <option value="views" {{ request('sort') == 'views' ? 'selected' : '' }}>{{ __('Vues') }}</option>
+                                <option value="created_at" {{ request('sort') == 'created_at' ? 'selected' : '' }}>Plus récent</option>
+                                <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Prix croissant</option>
+                                <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Prix décroissant</option>
+                                <option value="quantity" {{ request('sort') == 'quantity' ? 'selected' : '' }}>Quantité</option>
                             </select>
                         </div>
                         <div class="col-md-1 d-flex align-items-end">
-                            <button type="submit" class="btn btn-outline-primary w-100">
+                            <button type="submit" class="btn btn-outline-primary-green w-100">
                                 <i class="fas fa-search"></i>
                             </button>
                         </div>
@@ -131,120 +69,138 @@
         </div>
     </div>
 
-    <!-- Liste des offres -->
-    <div class="card shadow-sm">
-        <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center">
-                <h6 class="mb-0">{{ __('Liste de mes offres') }}</h6>
-                <div class="btn-group btn-group-sm">
-                    <button class="btn btn-outline-secondary active" onclick="toggleView('list')">
-                        <i class="fas fa-list"></i>
-                    </button>
-                    <button class="btn btn-outline-secondary" onclick="toggleView('grid')">
-                        <i class="fas fa-th"></i>
-                    </button>
+    <!-- Statistiques rapides -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary-green text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="mb-0">{{ $totalOffers ?? 156 }}</h4>
+                            <p class="mb-0">Offres actives</p>
+                        </div>
+                        <i class="fas fa-shopping-bag fa-2x opacity-75"></i>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>{{ __('Produit') }}</th>
-                            <th>{{ __('Prix') }}</th>
-                            <th>{{ __('Quantité') }}</th>
-                            <th>{{ __('Statut') }}</th>
-                            <th>{{ __('Vues') }}</th>
-                            <th>{{ __('Créé le') }}</th>
-                            <th>{{ __('Actions') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($offers ?? [] as $offer)
-                        <tr>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="{{ $offer->image ?? '/placeholder.svg?height=50&width=50' }}" 
-                                         class="rounded me-3" width="50" height="50" style="object-fit: cover;">
-                                    <div>
-                                        <h6 class="mb-1">{{ $offer->title ?? 'Tomates bio de saison' }}</h6>
-                                        <small class="text-muted">{{ $offer->category ?? 'Légumes' }}</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="fw-bold text-success">{{ $offer->price ?? '3.50' }}€</span>
-                                <small class="text-muted d-block">/{{ $offer->unit ?? 'kg' }}</small>
-                            </td>
-                            <td>
-                                <span class="fw-medium">{{ $offer->quantity ?? '25' }}</span>
-                                <small class="text-muted d-block">{{ $offer->unit ?? 'kg' }}</small>
-                            </td>
-                            <td>
-                                @php
-                                    $status = $offer->status ?? 'active';
-                                    $statusConfig = [
-                                        'active' => ['class' => 'success', 'icon' => 'check-circle', 'text' => __('Active')],
-                                        'pending' => ['class' => 'warning', 'icon' => 'clock', 'text' => __('En attente')],
-                                        'sold' => ['class' => 'info', 'icon' => 'handshake', 'text' => __('Vendue')],
-                                        'expired' => ['class' => 'danger', 'icon' => 'times-circle', 'text' => __('Expirée')]
-                                    ];
-                                    $config = $statusConfig[$status] ?? $statusConfig['active'];
-                                @endphp
-                                <span class="badge bg-{{ $config['class'] }}">
-                                    <i class="fas fa-{{ $config['icon'] }} me-1"></i>{{ $config['text'] }}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="fw-medium">{{ $offer->views ?? 45 }}</span>
-                                <small class="text-muted d-block">{{ __('vues') }}</small>
-                            </td>
-                            <td>
-                                <span>{{ $offer->created_at ?? '15/12/2024' }}</span>
-                                <small class="text-muted d-block">{{ $offer->time ?? '14:30' }}</small>
-                            </td>
-                            <td>
-                                <div class="btn-group btn-group-sm">
-                                    <a href="{{ route('user.offers.show', $offer->id ?? 1) }}" 
-                                       class="btn btn-outline-primary" title="{{ __('Voir') }}">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="{{ route('user.offers.edit', $offer->id ?? 1) }}" 
-                                       class="btn btn-outline-warning" title="{{ __('Modifier') }}">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    @if(($offer->status ?? 'active') == 'active')
-                                    <button class="btn btn-outline-secondary" 
-                                            onclick="toggleStatus({{ $offer->id ?? 1 }})" 
-                                            title="{{ __('Désactiver') }}">
-                                        <i class="fas fa-pause"></i>
-                                    </button>
-                                    @endif
-                                    <button class="btn btn-outline-danger" 
-                                            onclick="deleteOffer({{ $offer->id ?? 1 }})" 
-                                            title="{{ __('Supprimer') }}">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="7" class="text-center py-5">
-                                <i class="fas fa-shopping-bag fa-3x text-muted mb-3"></i>
-                                <h5>{{ __('Aucune offre') }}</h5>
-                                <p class="text-muted">{{ __('Vous n\'avez pas encore publié d\'offre') }}</p>
-                                <a href="{{ route('user.offers.create') }}" class="btn btn-primary">
-                                    {{ __('Créer ma première offre') }}
-                                </a>
-                            </td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+        <div class="col-md-3">
+            <div class="card bg-secondary-green text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="mb-0">{{ $totalCooperatives ?? 23 }}</h4>
+                            <p class="mb-0">Coopératives</p>
+                        </div>
+                        <i class="fas fa-users fa-2x opacity-75"></i>
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="col-md-3">
+            <div class="card bg-primary-green-light text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="mb-0">{{ $avgPrice ?? '12.50' }}€</h4>
+                            <p class="mb-0">Prix moyen</p>
+                        </div>
+                        <i class="fas fa-euro-sign fa-2x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-primary-green-dark text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="mb-0">{{ $newToday ?? 8 }}</h4>
+                            <p class="mb-0">Nouvelles aujourd'hui</p>
+                        </div>
+                        <i class="fas fa-plus-circle fa-2x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Liste des offres -->
+    <div class="row">
+        @forelse($offers ?? [] as $offer)
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm hover-shadow transition-all">
+                <div class="position-relative">
+                    <img src="{{ $offer->image ?? '/placeholder.svg?height=200&width=300&text=Tomates+bio' }}" 
+                         class="card-img-top" alt="{{ $offer->title ?? 'Tomates bio' }}" style="height: 200px; object-fit: cover;">
+                    <div class="position-absolute top-0 end-0 m-2">
+                        <span class="badge bg-secondary-green">{{ $offer->status ?? 'Disponible' }}</span>
+                    </div>
+                    <div class="position-absolute bottom-0 start-0 m-2">
+                        <span class="badge bg-primary-green">{{ $offer->category ?? 'Légumes' }}</span>
+                    </div>
+                </div>
+                
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ $offer->title ?? 'Tomates bio de saison' }}</h5>
+                    <p class="text-muted small mb-2">
+                        <i class="fas fa-map-marker-alt me-1"></i>
+                        {{ $offer->cooperative->name ?? 'Coopérative Bio du Sud' }} - {{ $offer->location ?? 'Marseille' }}
+                    </p>
+                    <p class="card-text flex-grow-1">{{ Str::limit($offer->description ?? 'Tomates biologiques cultivées sans pesticides, récoltées à maturité pour un goût authentique.', 100) }}</p>
+                    
+                    <div class="row align-items-center mt-auto">
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <span class="h5 mb-0 text-primary-green">{{ $offer->price ?? '3.50' }}€</span>
+                                <small class="text-muted ms-1">/{{ $offer->unit ?? 'kg' }}</small>
+                            </div>
+                            <small class="text-muted">Quantité: {{ $offer->quantity ?? '50' }} {{ $offer->unit ?? 'kg' }}</small>
+                        </div>
+                        <div class="col-6 text-end">
+                            <div class="btn-group" role="group">
+                                <a href="{{ route('offers.show', $offer->id ?? 1) }}" class="btn btn-outline-primary-green btn-sm">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <button class="btn btn-outline-danger btn-sm" onclick="addToWishlist({{ $offer->id ?? 1 }})">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <button class="btn btn-primary-green btn-sm" onclick="addToCart({{ $offer->id ?? 1 }})">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>
+                                Publié {{ $offer->created_at ?? '2 jours' }}
+                            </small>
+                            <div class="rating">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <i class="fas fa-star {{ $i <= ($offer->rating ?? 4) ? 'text-warning' : 'text-muted' }}"></i>
+                                @endfor
+                                <small class="text-muted ms-1">({{ $offer->reviews_count ?? 12 }})</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @empty
+        <div class="col-12">
+            <div class="text-center py-5">
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <h4 data-translate="common.no_results">Aucune offre trouvée</h4>
+                <p class="text-muted">Essayez de modifier vos critères de recherche</p>
+                <a href="{{ route('offers.create') }}" class="btn btn-primary-green">
+                    <span data-translate="offers.create">Publier la première offre</span>
+                </a>
+            </div>
+        </div>
+        @endforelse
     </div>
 
     <!-- Pagination -->
@@ -256,52 +212,49 @@
 </div>
 
 <script>
-function toggleStatus(offerId) {
-    if (confirm('{{ __("Êtes-vous sûr de vouloir changer le statut de cette offre ?") }}')) {
-        fetch(`/user/offers/${offerId}/toggle-status`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                'Content-Type': 'application/json',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showToast('{{ __("Statut mis à jour avec succès") }}', 'success');
-                location.reload();
-            }
-        });
-    }
+function addToCart(offerId) {
+    fetch(`/offers/${offerId}/add-to-cart`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast('Produit ajouté au panier', 'success');
+        }
+    });
 }
 
-function deleteOffer(offerId) {
-    if (confirm('{{ __("Êtes-vous sûr de vouloir supprimer cette offre ? Cette action est irréversible.") }}')) {
-        fetch(`/user/offers/${offerId}`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                'Content-Type': 'application/json',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showToast('{{ __("Offre supprimée avec succès") }}', 'success');
-                location.reload();
-            }
-        });
-    }
+function addToWishlist(offerId) {
+    fetch(`/offers/${offerId}/add-to-wishlist`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast('Produit ajouté aux favoris', 'success');
+        }
+    });
 }
 
-function exportOffers() {
-    const params = new URLSearchParams(window.location.search);
-    params.set('export', 'csv');
-    window.open(`/user/offers/export?${params.toString()}`, '_blank');
-}
-
-function toggleView(view) {
-    console.log('Toggle view:', view);
+function showToast(message, type) {
+    // Créer et afficher un toast
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type === 'success' ? 'success' : 'danger'} position-fixed`;
+    toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999;';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
 }
 </script>
 @endsection
