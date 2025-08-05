@@ -20,7 +20,7 @@
                     <!-- Registration Form -->
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
-                        
+
                         <!-- Account Type -->
                         <div class="mb-4">
                             <label class="form-label">Type de compte</label>
@@ -50,12 +50,12 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="first_name" class="form-label">Prénom</label>
-                                <input type="text" 
-                                       class="form-control @error('first_name') is-invalid @enderror" 
-                                       id="first_name" 
-                                       name="first_name" 
-                                       value="{{ old('first_name') }}" 
-                                       required 
+                                <input type="text"
+                                       class="form-control @error('first_name') is-invalid @enderror"
+                                       id="first_name"
+                                       name="first_name"
+                                       value="{{ old('first_name') }}"
+                                       required
                                        autocomplete="given-name"
                                        placeholder="Votre prénom">
                                 @error('first_name')
@@ -64,12 +64,12 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="last_name" class="form-label">Nom</label>
-                                <input type="text" 
-                                       class="form-control @error('last_name') is-invalid @enderror" 
-                                       id="last_name" 
-                                       name="last_name" 
-                                       value="{{ old('last_name') }}" 
-                                       required 
+                                <input type="text"
+                                       class="form-control @error('last_name') is-invalid @enderror"
+                                       id="last_name"
+                                       name="last_name"
+                                       value="{{ old('last_name') }}"
+                                       required
                                        autocomplete="family-name"
                                        placeholder="Votre nom">
                                 @error('last_name')
@@ -84,12 +84,12 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-envelope text-muted"></i>
                                 </span>
-                                <input type="email" 
-                                       class="form-control @error('email') is-invalid @enderror" 
-                                       id="email" 
-                                       name="email" 
-                                       value="{{ old('email') }}" 
-                                       required 
+                                <input type="email"
+                                       class="form-control @error('email') is-invalid @enderror"
+                                       id="email"
+                                       name="email"
+                                       value="{{ old('email') }}"
+                                       required
                                        autocomplete="email"
                                        placeholder="votre@email.com">
                             </div>
@@ -104,11 +104,11 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-phone text-muted"></i>
                                 </span>
-                                <input type="tel" 
-                                       class="form-control @error('phone') is-invalid @enderror" 
-                                       id="phone" 
-                                       name="phone" 
-                                       value="{{ old('phone') }}" 
+                                <input type="tel"
+                                       class="form-control @error('phone') is-invalid @enderror"
+                                       id="phone"
+                                       name="phone"
+                                       value="{{ old('phone') }}"
                                        required
                                        placeholder="+212 123 456 789">
                             </div>
@@ -120,11 +120,11 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="city" class="form-label">Ville</label>
-                                <input type="text" 
-                                       class="form-control @error('city') is-invalid @enderror" 
-                                       id="city" 
-                                       name="city" 
-                                       value="{{ old('city') }}" 
+                                <input type="text"
+                                       class="form-control @error('city') is-invalid @enderror"
+                                       id="city"
+                                       name="city"
+                                       value="{{ old('city') }}"
                                        required
                                        placeholder="Votre ville">
                                 @error('city')
@@ -153,11 +153,11 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-lock text-muted"></i>
                                 </span>
-                                <input type="password" 
-                                       class="form-control @error('password') is-invalid @enderror" 
-                                       id="password" 
-                                       name="password" 
-                                       required 
+                                <input type="password"
+                                       class="form-control @error('password') is-invalid @enderror"
+                                       id="password"
+                                       name="password"
+                                       required
                                        autocomplete="new-password"
                                        placeholder="Choisir un mot de passe">
                                 <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('password')">
@@ -175,11 +175,11 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-lock text-muted"></i>
                                 </span>
-                                <input type="password" 
-                                       class="form-control" 
-                                       id="password_confirmation" 
-                                       name="password_confirmation" 
-                                       required 
+                                <input type="password"
+                                       class="form-control"
+                                       id="password_confirmation"
+                                       name="password_confirmation"
+                                       required
                                        autocomplete="new-password"
                                        placeholder="Confirmer le mot de passe">
                                 <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('password_confirmation')">
@@ -190,13 +190,13 @@
 
                         <div class="mb-3">
                             <div class="form-check">
-                                <input class="form-check-input @error('terms') is-invalid @enderror" 
-                                       type="checkbox" 
-                                       name="terms" 
-                                       id="terms" 
+                                <input class="form-check-input @error('terms') is-invalid @enderror"
+                                       type="checkbox"
+                                       name="terms"
+                                       id="terms"
                                        required>
                                 <label class="form-check-label" for="terms">
-                                    J'accepte les <a href="/terms" target="_blank">conditions d'utilisation</a> 
+                                    J'accepte les <a href="/terms" target="_blank">conditions d'utilisation</a>
                                     et la <a href="/privacy" target="_blank">politique de confidentialité</a>
                                 </label>
                                 @error('terms')
@@ -215,7 +215,7 @@
                         </div>
 
                         <div class="d-grid mb-3">
-                            <button type="submit" class="btn btn-primary btn-lg">
+                            <button type="submit" class="btn btn-success btn-lg">
                                 <i class="fas fa-user-plus me-2"></i>Créer mon compte
                             </button>
                         </div>
@@ -224,7 +224,7 @@
                     <!-- Login Link -->
                     <div class="text-center">
                         <p class="text-muted">
-                            Déjà un compte ? 
+                            Déjà un compte ?
                             <a href="{{ route('login') }}" class="text-decoration-none fw-bold">
                                 Se connecter
                             </a>
@@ -243,7 +243,7 @@ function togglePassword(fieldId) {
     const field = document.getElementById(fieldId);
     const button = field.nextElementSibling;
     const icon = button.querySelector('i');
-    
+
     if (field.type === 'password') {
         field.type = 'text';
         icon.classList.remove('fa-eye');
@@ -261,7 +261,7 @@ function selectAccountType(type) {
         card.classList.remove('border-primary', 'border-cooperative-500');
         card.classList.add('border-gray-200');
     });
-    
+
     // Add active class to selected card
     const selectedCard = event.currentTarget;
     if (type === 'individual') {
@@ -271,7 +271,7 @@ function selectAccountType(type) {
         selectedCard.classList.add('border-cooperative-500');
         selectedCard.classList.remove('border-gray-200');
     }
-    
+
     // Update hidden input
     document.getElementById('account_type').value = type;
 }
